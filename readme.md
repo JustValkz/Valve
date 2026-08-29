@@ -1,105 +1,34 @@
-<!-- LOGO -->
-<p align="center">
-<pre>
-██╗   ██╗ █████╗ ██╗     ██╗   ██╗███████╗
-██║   ██║██╔══██╗██║     ██║   ██║██╔════╝
-██║   ██║███████║██║     ██║   ██║█████╗  
-╚██╗ ██╔╝██╔══██║██║     ╚██╗ ██╔║██╔══╝  
- ╚████╔╝ ██║  ██║███████╗ ╚████╔╝ ███████╗
-  ╚═══╝  ╚═╝  ╚═╝╚══════╝  ╚═══╝  ╚══════╝ 
-</pre>
-</p>
+# Valve PC Checking Tool
 
-# Valve — Advanced Digital Forensics & Integrity Scanner
+Windows forensic scanner (Ocean-style). **Standalone project** — separate from Myst (public/private DLL).
 
-Valve is a professional-grade forensic analysis tool designed to detect cheats, tampering, unauthorized tools, and behavioral anomalies through deep system log inspection. It analyzes dozens of Windows forensic surfaces, including logs and artifacts that most users cannot delete, modify, or even know exist.
+## Run from source
 
----
+```powershell
+cd "D:\Valve Pc Checking Tool"
+python -m pip install -r requirements.txt
+python valve.py
+```
 
-## 🔥 Features
+Run as **Administrator** for full scan coverage (MFT, USN journal, hive checks).
 
-### **Deep Log Inspection**
-Valve checks:
-- System event logs  
-- Registry transaction logs  
-- Application logs  
-- Crash diagnostics  
-- Network traces  
-- User activity logs  
-- Prefetch & Superfetch  
-- SRUM (System Resource Usage Monitor)  
-- WMI operational logs  
-- **NTFS USN Journal (undeletable file system change history)**  
-- ShimCache / AppCompatCache  
-- Amcache  
-- MUI Cache  
-- RecentFileCache  
-- Timestamp anomalies  
-- Additional low-level forensic artifacts normally only accessible through enterprise DFIR tools
+## Build EXE
 
----
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "D:\Valve Pc Checking Tool\build.ps1"
+```
 
-### **Undeletable Artifact Recovery**
-Valve inspects forensic surfaces that cannot be wiped:
-- NTFS USN Journal  
-- Registry transaction logs  
-- Event log metadata  
-- Kernel-level traces  
-- Persistent execution remnants  
+Output: `D:\Valve Pc Checking Tool\dist\ValveScan.exe`
 
----
+Right-click the EXE → **Run as administrator** for full kernel/recovery scans.
 
-### **Behavioral Cheat Detection**
-Valve detects:
-- Suspicious process ancestry  
-- Abnormal execution patterns  
-- Registry deltas  
-- Timestamp inconsistencies  
-- Tool-assisted input behavior  
-- Multi-log historical anomalies  
+## Scan coverage (kernel / recovery)
 
----
+- **MFT Recovery** — inactive (deleted) FILE records + `$STANDARD_INFORMATION` timestamp anomalies
+- **USN Journal** — delete/rename events, USN gaps, mass-delete patterns, missing journal
+- **Hive Integrity** — Amcache/SYSTEM hive `.LOG1`/`.LOG2` activity, recent hive writes
+- **Trace Prevention** — cleared event logs, empty prefetch, USN journal deleted
 
-### **Server-Side Evidence Sync**
-Valve automatically logs findings to a secure remote server:
-- Tamper-proof evidence  
-- Off-device audit trails  
-- Long-term historical review  
+## Keys
 
----
-
-### **Key-Based Access**
-Valve requires a valid license key to operate.
-
-To request a key:  
-**Discord:** `luv.yvsf`
-
----
-
-## 🧪 Why Valve Is Different
-
-Most tools stop at Prefetch.  
-Valve goes far beyond — into journal-level, kernel-level, and transactional logs that almost nobody knows about and even fewer know how to analyze.
-
-It reconstructs a complete behavioral timeline even when users attempt to hide or manipulate evidence.
-
-Valve is built as a full forensic suite, not a simple scanner.
-
----
-
-## 🔧 Use Cases
-
-- Digital forensics  
-- Anti-tamper investigations  
-- Cheat detection  
-- Incident response  
-- Timeline reconstruction  
-- Historical behavior analysis  
-
----
-
-## 🏆 Summary
-
-Valve is a forensics-grade, enterprise-tier integrity scanner capable of analyzing logs and artifacts that most tools cannot even access. With server-side logging, undeletable artifact inspection, and key-based access, Valve stands as one of the most powerful detection tools available.
-
----
+`https://raw.githubusercontent.com/JustValkz/valve-keysystem/refs/heads/main/keys`
